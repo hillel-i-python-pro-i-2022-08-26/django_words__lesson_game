@@ -5,10 +5,7 @@
     <title>{{ title }}</title>
 </head>
 <body>
-<ul>
-    <li><a href="{% url 'word_game:home_page' %}">Home</a></li>
-    <li><a href="{% url 'word_game:game' %}">Game</a></li>
-</ul>
+{% include '_hearder.html' %}
 
 {% block content %}
 

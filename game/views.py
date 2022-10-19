@@ -1,16 +1,16 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpRequest
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from game.forms import UserName, InputWord
 
 
 def show_home_page(request: HttpRequest) -> HttpResponse:
     return render(
         request,
-        "base.html",
+        "_base.html",
     )
 
 
-def show_room(request: HttpRequest):
+def show_room(request: HttpRequest) -> HttpResponse | HttpResponseRedirect:
     if request.method == "POST":
         form = UserName(request.POST)
         if form.is_valid():
