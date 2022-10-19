@@ -1,8 +1,10 @@
 from django import forms
+from django.core.exceptions import ValidationError
+
 from game.models import Word, User
 
 
-class UserName(forms.Form):
+class UserName(forms.ModelForm):
     name = forms.TextInput()
 
     class Meta:
@@ -10,7 +12,7 @@ class UserName(forms.Form):
         fields = ('name',)
 
 
-class InputWord(forms.Form):
+class InputWord(forms.ModelForm):
     input_word = forms.TextInput()
 
     class Meta:
