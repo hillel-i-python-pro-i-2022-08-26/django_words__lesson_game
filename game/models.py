@@ -11,4 +11,4 @@ class Word(models.Model):
 
 
 class User(models.Model):
-    name = models.CharField(max_length=50, default="Friend")
+    name = models.CharField(max_length=50)
