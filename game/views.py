@@ -1,7 +1,7 @@
-from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest
 from game.forms import UserName, InputWord
+from game.models import User, Word
 
 
 def show_home_page(request: HttpRequest) -> HttpResponse:
@@ -16,7 +16,6 @@ def show_room(request: HttpRequest):
         form = UserName(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "User has been created successfully.")
             return redirect("word_game:game")
     else:
         form = UserName()
@@ -28,3 +27,22 @@ def show_room(request: HttpRequest):
             "form": form,
         },
     )
+
+
+def game_play(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        form = InputWord(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("word_game:game_play")
+    else:
+        form = InputWord()
+    return render(
+        request,
+        "game/gameplay.html",
+        {
+            "title": "Playroom",
+            "form": form,
+        },
+    )
+
