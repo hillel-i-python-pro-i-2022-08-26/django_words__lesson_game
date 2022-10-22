@@ -9,7 +9,7 @@ class UserName(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('name',)
+        fields = ('name', )
 
 
 class InputWord(forms.ModelForm):
@@ -17,10 +17,13 @@ class InputWord(forms.ModelForm):
 
     class Meta:
         model = Word
-        fields = ('word',)
+        fields = ("word",)
 
-    def word__clean(self):
+    def clean_word(self):
         word = self.cleaned_data["word"]
         if len(word.split()) > 1:
             raise ValidationError('Should be one word!')
+        elif not word.isalpha():
+            raise ValidationError('Should not consist of numbers and signs')
+        
         return word
