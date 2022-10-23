@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.shortcuts import render, redirect
 
@@ -29,21 +30,21 @@ def game_play(request: HttpRequest, name: Room.room_name) -> HttpResponse | Http
     if request.method == "POST":
         form = InputWord(request.POST)
         if form.is_valid():
-            form.save()
             word = Word(word=form.input_word, user_words_id=room.room_name)
-            room.word_set.add(word, bulk=False)
+            room.word_set.all()
             word.save()
+            messages.info(request, 'Word is accepted!')
             return redirect("word_game:game_play", name=name)
     else:
         form = InputWord()
-    return render(
-        request,
-        "game/gameplay.html",
-        {
-            "title": "Playroom",
-            "form": form,
-        },
-    )
+        return render(
+            request,
+            "game/gameplay.html",
+            {
+                "title": "Playroom",
+                "form": form,
+            },
+        )
 
 
 def show_room_init(request: HttpRequest) -> HttpResponse | HttpResponseRedirect:
