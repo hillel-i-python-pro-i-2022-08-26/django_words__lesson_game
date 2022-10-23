@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db import IntegrityError
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.shortcuts import render, redirect
 
@@ -30,10 +31,15 @@ def game_play(request: HttpRequest, name: Room.room_name) -> HttpResponse | Http
     if request.method == "POST":
         form = InputWord(request.POST)
         if form.is_valid():
-            word = Word(word=form.input_word, user_words_id=room.room_name)
-            room.word_set.all()
-            word.save()
-            messages.info(request, 'Word is accepted!')
+            word = Word()
+            word.word = form.cleaned_data['word']
+            word.user_words_id = room.room_name
+            try:
+                room.word_set.add(word, bulk=False)
+                messages.info(request, 'Word is accepted!')
+            except IntegrityError:
+                messages.info(request, 'Exists!')
+
             return redirect("word_game:game_play", name=name)
     else:
         form = InputWord()

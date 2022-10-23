@@ -1,5 +1,4 @@
-from django.core.exceptions import ValidationError
-from django.db import models, IntegrityError
+from django.db import models
 
 
 class Room(models.Model):
@@ -18,3 +17,11 @@ class User(models.Model):
 class Word(models.Model):
     word = models.CharField(max_length=50, )
     user_words = models.ForeignKey(Room, on_delete=models.CASCADE, null=True, to_field='room_name')
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['word', 'user_words'],
+                name='unique_word',
+            )
+        ]

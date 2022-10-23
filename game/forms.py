@@ -13,8 +13,6 @@ class UserName(forms.ModelForm):
 
 
 class InputWord(forms.ModelForm):
-    input_word = forms.TextInput()
-
     class Meta:
         model = Word
         fields = ("word",)
