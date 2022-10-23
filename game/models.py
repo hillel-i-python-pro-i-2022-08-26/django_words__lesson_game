@@ -17,6 +17,7 @@ class User(models.Model):
 class Word(models.Model):
     word = models.CharField(max_length=50, )
     user_words = models.ForeignKey(Room, on_delete=models.CASCADE, null=True, to_field='room_name')
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         constraints = [
@@ -25,3 +26,4 @@ class Word(models.Model):
                 name='unique_word',
             )
         ]
+        ordering = ['-created_at']

@@ -28,6 +28,7 @@ def show_name_input(request: HttpRequest, name: Room.room_name) -> HttpResponse 
 
 def game_play(request: HttpRequest, name: Room.room_name) -> HttpResponse | HttpResponseRedirect:
     room = Room.objects.get(room_name=name)
+    words_in_room = Word.objects.filter(user_words_id=room.room_name)
     if request.method == "POST":
         form = InputWord(request.POST)
         if form.is_valid():
@@ -49,6 +50,7 @@ def game_play(request: HttpRequest, name: Room.room_name) -> HttpResponse | Http
             {
                 "title": "Playroom",
                 "form": form,
+                "words": words_in_room,
             },
         )
 
