@@ -9,10 +9,26 @@
 
 <ul>
     <li><a href="{% url 'word_game:home_page' %}">Home</a></li>
-    <li><a href="{% url 'word_game:game' %}">Game</a></li>
+    <li><a href="{% url 'word_game:choose_room' %}">Room</a></li>
 </ul>
 
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message|safe }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
 {% block content %}
+    <form method="POST" autocomplete="off" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form.as_p }}
+        <input type="submit" class="btn-sub" value="Continue">
+    </form>
 
 {% endblock %}
 </body>

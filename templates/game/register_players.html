@@ -11,7 +11,7 @@
         {{ form.as_p }}
         <input type="submit" class="btn-sub" value="Add user">
     </form>
-<form action="{% url 'word_game:game_play' %}">
+<form action="{% url 'word_game:game_play' name=name%}">
     <input type="submit" value="Start Game" />
 </form>
 {% endblock  %}

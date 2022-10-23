@@ -1,7 +1,9 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
+from django.db.models import constraints
 
-from game.models import Word, User
+from game.models import Room, Word, User
 
 
 class UserName(forms.ModelForm):
@@ -9,7 +11,7 @@ class UserName(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('name', )
+        fields = ('name',)
 
 
 class InputWord(forms.ModelForm):
@@ -25,5 +27,14 @@ class InputWord(forms.ModelForm):
             raise ValidationError('Should be one word!')
         elif not word.isalpha():
             raise ValidationError('Should not consist of numbers and signs')
-        
         return word
+
+
+class RoomForm(forms.ModelForm):
+    class Meta:
+        model = Room
+        fields = ('room_name',)
+
+
+class ContinueForm(forms.Form):
+    room_name = forms.SlugField()
