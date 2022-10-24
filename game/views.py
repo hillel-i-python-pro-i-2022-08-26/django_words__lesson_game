@@ -28,7 +28,7 @@ def show_name_input(request: HttpRequest, name: Room.room_name) -> HttpResponse 
 
 def game_play(request: HttpRequest, name: Room.room_name) -> HttpResponse | HttpResponseRedirect:
     room = Room.objects.get(room_name=name)
-    words_in_room = Word.objects.filter(user_words_id=room.room_name)
+    words_in_room = Word.objects.filter(user_words_id=room.room_name)[:10]
     if request.method == "POST":
         form = InputWord(request.POST)
         if form.is_valid():
@@ -36,23 +36,23 @@ def game_play(request: HttpRequest, name: Room.room_name) -> HttpResponse | Http
             word.word = form.cleaned_data['word']
             word.user_words_id = room.room_name
             try:
-                room.word_set.add(word, bulk=False)
+                word.save()
                 messages.info(request, 'Word is accepted!')
             except IntegrityError:
-                messages.info(request, 'Exists!')
+                messages.info(request, 'Word already exists!')
 
             return redirect("word_game:game_play", name=name)
     else:
         form = InputWord()
-        return render(
-            request,
-            "game/gameplay.html",
-            {
-                "title": "Playroom",
-                "form": form,
-                "words": words_in_room,
-            },
-        )
+    return render(
+        request,
+        "game/gameplay.html",
+        {
+            "title": "Playroom",
+            "form": form,
+            "words": words_in_room,
+        },
+    )
 
 
 def show_room_init(request: HttpRequest) -> HttpResponse | HttpResponseRedirect:

@@ -5,6 +5,16 @@
 {% block content %}
     <h1>Game of your life</h1>
 
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">
+                    {{ message|safe }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     <form method="POST" autocomplete="off" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.non_field_errors }}
